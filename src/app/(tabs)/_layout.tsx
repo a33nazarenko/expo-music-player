@@ -21,7 +21,7 @@ const TabsNavigation = () => {
             paddingBottom: 4
         },
         tabBarBackground: () => (
-            <BlurView intensity={95} style={{ ...StyleSheet.absoluteFillObject, overflow: 'hidden', borderTopLeftRadius: 20, borderTopRightRadius: 20 }} />
+            <BlurView intensity={100} blurReductionFactor={1} tint="dark" style={{ ...StyleSheet.absoluteFillObject, overflow: 'hidden', borderTopLeftRadius: 20, borderTopRightRadius: 20 }} />
         )
     }}>
         <Tabs.Screen name="favorites" options={{
