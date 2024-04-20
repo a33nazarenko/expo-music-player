@@ -4,8 +4,12 @@ import { useLayoutEffect, useState } from "react";
 import { SearchBarProps } from "react-native-screens";
 
 const defaultSearchOptions: SearchBarProps = {
-    tintColor: colors.primary,
-    hideWhenScrolling: false
+    tintColor: colors.text,
+    hideWhenScrolling: false,
+    headerIconColor: colors.text,
+    textColor: colors.text,
+    hintTextColor: colors.textMuted
+
 };
 
 export const useNavigationSearch = ({ searchBarOptions }: { searchBarOptions?: SearchBarProps }) => {
@@ -14,6 +18,7 @@ export const useNavigationSearch = ({ searchBarOptions }: { searchBarOptions?: S
     const navigation = useNavigation();
 
     const handleOnChangeText: SearchBarProps['onChangeText'] = ({ nativeEvent: { text } }) => {
+        console.log('text', text)
         setSearch(text)
     }
     useLayoutEffect(() => {
