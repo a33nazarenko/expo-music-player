@@ -3,36 +3,45 @@ import { colors, fontSize } from "@/constants/tokens";
 import { defaultStyles } from "@/styles";
 import { StyleSheet, TouchableHighlight, View, Text } from "react-native"
 import FastImage from "react-native-fast-image"
+import { Track, useActiveTrack } from "react-native-track-player";
+import { Entypo, Ionicons } from '@expo/vector-icons';
 
 export type TrackListItemProps = {
-    track: { title: string; image?: string, artist?: string }
+    track: Track
+    onTrackSelect: (track: Track) => void
 }
-export const TrackListItem = ({ track }: TrackListItemProps) => {
-    const isActiveTrack = false;
+export const TrackListItem = ({ track, onTrackSelect }: TrackListItemProps) => {
+    const isActiveTrack = useActiveTrack()?.url === track.url;
 
-    return <TouchableHighlight>
-        <View style={{ ...styles.trackItemContainer }}>
-            <View>
-                <FastImage source={{
-                    uri: track.image ?? unknownTrackImageUri,
-                    priority: FastImage.priority.normal
-                }}
-                    style={{
-                        ...styles.trackArtworkImage,
-                        opacity: isActiveTrack ? 0.6 : 1,
-                    }} />
+    return (
+        <TouchableHighlight onPress={() => onTrackSelect(track)}>
+            <View style={{ ...styles.trackItemContainer }}>
+                <View>
+                    <FastImage source={{
+                        uri: track.artwork ?? unknownTrackImageUri,
+                        priority: FastImage.priority.normal
+                    }}
+                        style={{
+                            ...styles.trackArtworkImage,
+                            opacity: isActiveTrack ? 0.6 : 1,
+                        }} />
+                </View>
+                <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                    <View style={{ width: '100%' }}>
+                        <Text numberOfLines={1} style={{
+                            ...styles.trackTitleText,
+                            color: isActiveTrack ? colors.primary : colors.text
+                        }}>{track.title}</Text>
+                        {track.artist && (
+                            <Text numberOfLines={1} style={{ ...styles.trackArtistText }}>{track.artist}</Text>
+                        )}
+                    </View>
+
+                    <Entypo name="dots-three-horizontal" size={18} color={colors.icon} />
+                </View>
             </View>
-            <View style={{ width: '100%' }}>
-                <Text numberOfLines={1} style={{
-                    ...styles.trackTitleText,
-                    color: isActiveTrack ? colors.primary : colors.text
-                }}>{track.title}</Text>
-                {track.artist && (
-                    <Text numberOfLines={1} style={{ ...styles.trackArtistText }}>{track.artist}</Text>
-                )}
-            </View>
-        </View>
-    </TouchableHighlight>
+        </TouchableHighlight>
+    )
 }
 
 const styles = StyleSheet.create({
