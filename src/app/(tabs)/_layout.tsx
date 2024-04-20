@@ -1,7 +1,7 @@
 import { colors, fontSize } from "@/constants/tokens";
 import { BlurView } from "expo-blur";
 import { Tabs } from "expo-router";
-import { StyleSheet } from 'react-native';
+import { Platform, StyleSheet, View } from 'react-native';
 import { FontAwesome, MaterialCommunityIcons, Ionicons, FontAwesome6 } from '@expo/vector-icons';
 import { FloatingPlayer } from "@/components/FloatingPlayer";
 
@@ -21,9 +21,9 @@ const TabsNavigation = () => {
                     paddingTop: 0,
                     paddingBottom: 4
                 },
-                tabBarBackground: () => (
+                tabBarBackground: () => Platform.OS === 'ios' ? (
                     <BlurView intensity={100} blurReductionFactor={1} tint="dark" style={{ ...StyleSheet.absoluteFillObject, overflow: 'hidden' }} />
-                )
+                ) : (<View style={{ ...StyleSheet.absoluteFillObject, overflow: 'hidden', backgroundColor: '#252525' }} />)
             }}>
                 <Tabs.Screen name="favorites" options={{
                     title: 'Favorites',

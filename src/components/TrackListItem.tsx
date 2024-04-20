@@ -3,14 +3,16 @@ import { colors, fontSize } from "@/constants/tokens";
 import { defaultStyles } from "@/styles";
 import { StyleSheet, TouchableHighlight, View, Text } from "react-native"
 import FastImage from "react-native-fast-image"
-import { Track, useActiveTrack } from "react-native-track-player";
+import { Track, useActiveTrack, useIsPlaying } from "react-native-track-player";
 import { Entypo, Ionicons } from '@expo/vector-icons';
+import LoaderKit from 'react-native-loader-kit';
 
 export type TrackListItemProps = {
     track: Track
     onTrackSelect: (track: Track) => void
 }
 export const TrackListItem = ({ track, onTrackSelect }: TrackListItemProps) => {
+    const { playing } = useIsPlaying();
     const isActiveTrack = useActiveTrack()?.url === track.url;
 
     return (
@@ -25,6 +27,12 @@ export const TrackListItem = ({ track, onTrackSelect }: TrackListItemProps) => {
                             ...styles.trackArtworkImage,
                             opacity: isActiveTrack ? 0.6 : 1,
                         }} />
+
+                    {
+                        isActiveTrack && (playing ?
+                            (<LoaderKit style={styles.trackPlayingIconIndicator} name="LineScaleParty" color={colors.icon} />) :
+                            (<Ionicons style={styles.trackPauseIndicator} name="play" size={24} color={colors.icon} />))
+                    }
                 </View>
                 <View style={{ flex: 1, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <View style={{ width: '100%' }}>
@@ -45,6 +53,18 @@ export const TrackListItem = ({ track, onTrackSelect }: TrackListItemProps) => {
 }
 
 const styles = StyleSheet.create({
+    trackPlayingIconIndicator: {
+        position: 'absolute',
+        top: 18,
+        left: 16,
+        width: 16,
+        height: 16
+    },
+    trackPauseIndicator: {
+        position: "absolute",
+        top: 14,
+        left: 14
+    },
     trackItemContainer: {
         flexDirection: 'row',
         columnGap: 14,

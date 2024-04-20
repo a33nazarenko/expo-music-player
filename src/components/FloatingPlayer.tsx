@@ -4,13 +4,14 @@ import { StyleSheet, TouchableOpacity, View, Text, ViewStyle, ViewProps } from "
 import FastImage from "react-native-fast-image";
 import { Track, useActiveTrack } from "react-native-track-player"
 import { PlayPauseButton, SkipToNextButton } from '@/components/PlayerControls'
+import { useLastActiveTrack } from "@/hooks/useLastActiveTrack";
+import { MovingText } from "./MovingText";
 
 export const FloatingPlayer = ({ style }: ViewProps) => {
     const activeTrack = useActiveTrack();
+    const lastActiveTrack = useLastActiveTrack();
 
-    const displayedTrack: Track = activeTrack ?? {
-        title: 'This is a song'
-    }
+    const displayedTrack = activeTrack ?? lastActiveTrack
 
     if (!displayedTrack) {
         return null
@@ -27,7 +28,7 @@ export const FloatingPlayer = ({ style }: ViewProps) => {
                 />
 
                 <View style={styles.trackTitleContainer}>
-                    <Text style={styles.trackTitle}>{displayedTrack.title}</Text>
+                    <MovingText style={styles.trackTitle} text={displayedTrack.title ?? ""} animationThreshold={25} />
                 </View>
 
                 <View style={styles.trackControlsContainer}>
